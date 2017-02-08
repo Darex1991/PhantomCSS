@@ -71,20 +71,27 @@ casper.test.begin( 'SSO visual tests', function ( test ) {
 
   links = ['http://localhost:9070/anmelden','http://localhost:9070/registrieren'];
 
-
   casper.start().each(links, function(self, link) {
     self.thenOpen(link, function() {
         var filename = this.getCurrentUrl().split('/')[3];
         casper.viewport( 1024, 768 );
-        casper.evaluate(function() {
-          var content = document.querySelector('.content');
-          content.style.background = '#000'
-        });
         phantomcss.screenshot( '.userform', filename );
+        casper.then(
+          function provokeFormError (){
+            casper.evaluate(function(){
+              document.querySelector('form').setAttribute('novalidate','true');
+            });
+        		this.fill('form', {
+        			'email' : 'foo',
+        			'password' : '123456'
+        		}, true)
+            phantomcss.screenshot( '.userform', filename + '_form_error');
+        	}
+        );
+
     });
   });
 
-	 
 	casper.then( function now_check_the_screenshots() {
 		// compare screenshots
 		phantomcss.compareAll();
