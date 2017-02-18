@@ -74,8 +74,9 @@ casper.test.begin( 'SSO visual tests', function ( test ) {
   casper.start().each(links, function(self, link) {
     self.thenOpen(link, function() {
         var filename = this.getCurrentUrl().split('/')[3];
-        casper.viewport( 1024, 768 );
-        phantomcss.screenshot( '.userform', filename );
+        casper.viewport( 1920, 1080 );
+        phantomcss.screenshot( '.userform', filename + '_userform' );
+				phantomcss.screenshot( 'html', filename + '_fullscreen' );
         casper.then(
           function provokeFormError (){
             casper.evaluate(function(){
@@ -85,7 +86,7 @@ casper.test.begin( 'SSO visual tests', function ( test ) {
         			'email' : 'foo',
         			'password' : '123456'
         		}, true)
-            phantomcss.screenshot( '.userform', filename + '_form_error');
+            phantomcss.screenshot( '.userform', filename + '_userform_error');
         	}
         );
 
