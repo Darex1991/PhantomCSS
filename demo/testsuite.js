@@ -9,8 +9,10 @@ var phantomcss = require( path );
 
 var links = [
 	'http://localhost:3000/',
-	'http://localhost:3000/todos'
+	// 'http://localhost:3000/todos'
 ];
+
+casper.options.waitTimeout = 1000;
 
 casper.test.begin( 'Coffee machine visual tests', function ( test ) {
 	phantomcss.init( {
